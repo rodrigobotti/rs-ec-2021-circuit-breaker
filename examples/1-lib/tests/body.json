@@ -1,0 +1,1 @@
+{"query":"query Query {\n  profile {\n    user {\n      data {\n        id\n        firstName\n        lastName\n        birthDate\n      }\n      errors\n    }\n    address {\n      data {\n        addressLine1\n        addressLine2\n        state\n        city\n        country\n        zipCode\n      }\n      errors\n    }\n  }\n}"}

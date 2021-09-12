@@ -1,0 +1,26 @@
+{
+  "name": "circuit-breaker-example-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:bff": "node src/bff.js",
+    "start:user": "node src/backends/user-service.js",
+    "start:address": "node src/backends/address-service.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "abort-controller": "^3.0.0",
+    "apollo-server": "^3.3.0",
+    "graphql": "^15.5.3",
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^10.1.1",
+    "node-fetch": "^2.6.2",
+    "opossum": "^6.2.1",
+    "pino": "^6.13.2",
+    "pino-pretty": "^6.0.0"
+  }
+}

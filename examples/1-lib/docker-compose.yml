@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+
+  address-service:
+    build: .
+    command: 'npm run start:address'
+    environment:
+      - SERVICE_NAME=address-service
+      - FORCED_DELAY=50
+      - PORT=3000
+    expose:
+      - 3000
+    networks:
+      - example-1
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+
+  user-service:
+    build: .
+    command: 'npm run start:user'
+    environment:
+      - SERVICE_NAME=user-service
+      - FORCED_DELAY=50
+      - PORT=3000
+    expose:
+      - 3000
+    networks:
+      - example-1
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+
+  bff:
+    build: .
+    command: 'npm run start:bff'
+    environment:
+      - ADDRESS_SERVICE_URL=http://address-service:3000/api
+      - USER_SERVICE_URL=http://user-service:3000/api
+      - CIRCUIT_BREAKER_ENABLED=false
+      - SERVICE_NAME=bff
+      - PORT=4000
+    expose:
+      - 4000
+    ports:
+      - 4000:4000
+    networks:
+      - example-1
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+
+
+networks:
+  example-1:
