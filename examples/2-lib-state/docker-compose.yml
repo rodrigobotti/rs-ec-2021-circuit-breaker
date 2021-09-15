@@ -1,0 +1,67 @@
+version: '3'
+
+x-client-app: &client-app
+  build: .
+  command: 'npm run start:client'
+  environment:
+    - SERVICE_NAME=backend-client
+    - PORT=3000
+    - REDIS_HOST=redis
+    - REDIS_PORT=6379
+    - SERVER_URL=http://backend-server:3000/api
+  expose:
+    - 3000
+  networks:
+    - example-2
+  depends_on:
+    - redis
+  deploy:
+    resources:
+      limits:
+        cpus: '0.5'
+        memory: 128M
+
+services:
+
+  backend-client-node-1:
+    <<: *client-app
+    ports:
+      - 3001:3000
+
+  backend-client-node-2:
+    <<: *client-app
+    ports:
+      - 3002:3000
+
+  backend-client-node-3:
+    <<: *client-app
+    ports:
+      - 3003:3000
+
+  backend-server:
+    build: .
+    command: 'npm run start:server'
+    environment:
+      - SERVICE_NAME=backend-service
+      - PORT=3000
+    expose:
+      - 3000
+    networks:
+      - example-2
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+
+  redis:
+    image: redis:alpine
+    hostname: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - example-2
+
+
+networks:
+  example-2:
