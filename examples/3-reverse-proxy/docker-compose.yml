@@ -1,0 +1,70 @@
+version: '3'
+
+x-backend-service: &backend-app
+  build: .
+  command: 'npm run start:backend'
+  expose:
+    - 3000
+  networks:
+    - example-3
+  deploy:
+    resources:
+      limits:
+        cpus: '0.5'
+        memory: 128M
+
+services:
+
+  client-service:
+    build: .
+    command: 'npm run start:client'
+    environment:
+      - SERVICE_NAME=client-service
+      - PORT=3000
+      - BACKEND_SERVICE_URL=http://haproxy:4000/backend/api
+    expose:
+      - 3000
+    networks:
+      - example-3
+    ports:
+      - 3000:3000
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+
+  backend-service-node-1:
+    <<: *backend-app
+    environment:
+      - SERVICE_NAME=backend-service
+      - PORT=3000
+      - FORCE_ERROR=false
+
+  backend-service-node-2:
+    <<: *backend-app
+    environment:
+      - SERVICE_NAME=backend-service
+      - PORT=3000
+      - FORCE_ERROR=true
+
+  haproxy:
+    image: haproxy:2.4-alpine
+    expose:
+      - 4000
+      - 8080
+    environment:
+      - FRONT_PORT=4000
+      - STATS_PORT=8080
+      - BACKEND_SERVER_1=backend-service-node-1
+      - BACKEND_SERVER_2=backend-service-node-2
+      - BACKEND_SERVER_PORT=3000
+    ports:
+      - 8080:8080
+    volumes:
+      - ./src/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    networks:
+      - example-3
+
+networks:
+  example-3:

@@ -1,0 +1,20 @@
+{
+  "name": "circuit-breaker-example-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:client": "node src/client/index.js",
+    "start:backend": "node src/backend/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "faker": "^5.5.3",
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^10.1.1",
+    "node-fetch": "^2.6.2"
+  }
+}
