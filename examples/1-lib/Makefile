@@ -1,7 +1,7 @@
 # start
 
 start:
-	@docker-compose up --build -d
+	@docker-compose up -d
 
 start/service:
 	@docker-compose up -d $(service)

@@ -1,7 +1,7 @@
 # start
 
 start:
-	@docker-compose up -d --build
+	@docker-compose up -d
 
 start/server:
 	@docker-compose up -d backend-server
